@@ -15,9 +15,9 @@ venv/
 credentials*.json
 secrets*.json
 
-# Artefatos intermediários (o PDF final é relatorio/consulta-facil-a3.pdf)
-relatorio/draft.pdf
-relatorio/preview/
+# Material da entrega mantido só localmente (relatório, PDF e capturas)
+relatorio/
+capturas/
 test-login.png
 *.log
 tmp/

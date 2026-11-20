@@ -9,8 +9,6 @@ Estudo de caso da disciplina **Modelos, Métodos e Técnicas da Engenharia de So
 | Pasta | O que tem |
 | --- | --- |
 | `prototipo/` | Protótipo navegável em HTML, CSS e JavaScript puro (publicado no GitHub Pages) |
-| `relatorio/` | Relatório em HTML e o PDF final (`consulta-facil-a3.pdf`) |
-| `capturas/` | Capturas de tela do protótipo usadas no relatório |
 
 ## Como usar o protótipo
 
