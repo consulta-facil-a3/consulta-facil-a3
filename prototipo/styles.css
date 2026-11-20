@@ -54,6 +54,14 @@ button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{o
 .skip-link{position:absolute;left:-999px;top:.5rem;background:var(--brand);color:#fff;padding:.6rem 1rem;border-radius:var(--r-sm);z-index:200}
 .skip-link:focus{left:.5rem}
 svg{flex:0 0 auto}
+.sprite{position:absolute;overflow:hidden}
+.icon-inline{width:1rem;height:1rem;vertical-align:-.15rem}
+.mt-40{margin-top:.4rem}
+.mt-50{margin-top:.5rem}
+.mt-75{margin-top:.75rem}
+.mt-80{margin-top:.8rem}
+.consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.88rem;margin:.6rem 0 .9rem;line-height:1.4}
+.consent input{width:1.3rem;height:1.3rem;margin-top:.05rem;flex:0 0 auto;accent-color:#0b6b5b}
 
 /* ---------- palco (desktop) ---------- */
 .stage{
@@ -83,14 +91,15 @@ svg{flex:0 0 auto}
     background:none;border:0;padding:.8rem .2rem;text-align:left;color:var(--ink);
     transition:color var(--fast) var(--ease),padding var(--fast) var(--ease);
   }
-  .route button span{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.82rem;font-weight:700}
+  .route button .route-num{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.82rem;font-weight:700}
   .route button strong{font-weight:700;font-size:.95rem}
+  .route button .route-text{display:block}
   .route button small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
   .route button svg{width:1.1rem;height:1.1rem;color:var(--brand);opacity:0;transform:translateX(-4px);transition:opacity var(--fast) var(--ease),transform var(--fast) var(--ease)}
   .route button:hover{color:var(--brand-700);padding-left:.5rem}
   .route button:hover svg,.route button[aria-current="step"] svg{opacity:1;transform:none}
   .route button[aria-current="step"] strong{color:var(--brand-700)}
-  .route button[aria-current="step"] span{color:var(--brand)}
+  .route button[aria-current="step"] .route-num{color:var(--brand)}
   .stage-note{margin-top:1.4rem;font-size:.8rem;color:var(--muted)}
 }
 

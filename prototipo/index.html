@@ -11,7 +11,7 @@
 <body data-screen="entrar" class="bare">
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+<svg class="sprite" width="0" height="0" aria-hidden="true">
   <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
@@ -45,13 +45,13 @@
     <h2>Agendar consulta sem e-mail e sem fila.</h2>
     <p>Protótipo navegável do estudo de caso A3. Siga o roteiro ou use o aplicativo ao lado como um paciente faria.</p>
     <ol class="route">
-      <li><button type="button" data-route="entrar"><span>01</span><div><strong>Entrada sem e-mail</strong><small>CPF e data de nascimento</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
-      <li><button type="button" data-route="inicio"><span>02</span><div><strong>Início</strong><small>Próxima consulta e atalhos</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
-      <li><button type="button" data-route="ubs"><span>03</span><div><strong>Escolha da UBS</strong><small>Bairro, distância e agente</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
-      <li><button type="button" data-route="horarios"><span>04</span><div><strong>Horários</strong><small>Última vaga sinalizada</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
-      <li><button type="button" data-route="vaga-ocupada"><span>05</span><div><strong>Vaga ocupada</strong><small>Resposta 409 com alternativas</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
-      <li><button type="button" data-route="comprovante"><span>06</span><div><strong>Comprovante</strong><small>Não depende do WhatsApp</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
-      <li><button type="button" data-route="ajuda"><span>07</span><div><strong>Ajuda e acessibilidade</strong><small>Letra maior, contraste, telefone</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="entrar"><span class="route-num">01</span><span class="route-text"><strong>Entrada sem e-mail</strong><small>CPF e data de nascimento</small></span><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="inicio"><span class="route-num">02</span><span class="route-text"><strong>Início</strong><small>Próxima consulta e atalhos</small></span><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="ubs"><span class="route-num">03</span><span class="route-text"><strong>Escolha da UBS</strong><small>Bairro, distância e agente</small></span><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="horarios"><span class="route-num">04</span><span class="route-text"><strong>Horários</strong><small>Última vaga sinalizada</small></span><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="vaga-ocupada"><span class="route-num">05</span><span class="route-text"><strong>Vaga ocupada</strong><small>Resposta 409 com alternativas</small></span><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="comprovante"><span class="route-num">06</span><span class="route-text"><strong>Comprovante</strong><small>Não depende do WhatsApp</small></span><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="ajuda"><span class="route-num">07</span><span class="route-text"><strong>Ajuda e acessibilidade</strong><small>Letra maior, contraste, telefone</small></span><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
     </ol>
     <p class="stage-note">Dados fictícios. Sem servidor e sem integração real com o SIGA-Saúde.</p>
   </aside>
@@ -61,7 +61,7 @@
       <div class="a11y-tools">
         <button type="button" id="fontDown" aria-label="Diminuir tamanho da letra">A-</button>
         <button type="button" id="fontUp" aria-label="Aumentar tamanho da letra">A+</button>
-        <button type="button" id="contrastBtn" aria-label="Ativar alto contraste" aria-pressed="false"><svg style="width:1rem;height:1rem;vertical-align:-.15rem" aria-hidden="true"><use href="#i-contrast"/></svg></button>
+        <button type="button" id="contrastBtn" aria-label="Ativar alto contraste" aria-pressed="false"><svg class="icon-inline" aria-hidden="true"><use href="#i-contrast"/></svg></button>
       </div>
     </div>
 
@@ -173,11 +173,11 @@
           </button>
           <p class="help-box" id="noUbs" hidden>Nenhuma UBS encontrada. Tente outro bairro ou ligue 0800 123 4567.</p>
         </div>
-        <div class="help-card" style="margin-top:.75rem">
+        <div class="help-card mt-75">
           <span class="ico"><svg aria-hidden="true"><use href="#i-user"/></svg></span>
           <div><strong>Precisa de ajuda para escolher?</strong><p>Um agente de saúde pode agendar em seu nome. O atendimento é gratuito.</p><button class="link" type="button" data-go="agente">Atendimento com agente</button></div>
         </div>
-        <p class="tiny" style="margin-top:.8rem">Não sabe qual escolher? Ligue para a central e informe seu bairro.</p>
+        <p class="tiny mt-80">Não sabe qual escolher? Ligue para a central e informe seu bairro.</p>
       </section>
 
       <section class="screen" id="screen-especialidade" aria-labelledby="h-esp">
@@ -217,7 +217,7 @@
         <p class="eyebrow">Passo 3 de 3</p>
         <h1 id="h-horarios" tabindex="-1">Escolha o horário</h1>
         <div class="chip-summary"><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-bind="ubs">UBS Jardim das Flores</span> &middot; <span data-bind="esp">Pediatria</span></div>
-        <div class="date-strip" id="dateStrip" aria-label="Dias disponíveis">
+        <div class="date-strip" id="dateStrip" role="group" aria-label="Dias disponíveis">
           <button class="date-chip" type="button" data-date="Qui, 19 de novembro" aria-pressed="false"><span>Hoje</span><strong>19</strong></button>
           <button class="date-chip" type="button" data-date="Sex, 20 de novembro" aria-pressed="true"><span>Sex</span><strong>20</strong></button>
           <button class="date-chip" type="button" data-date="Seg, 23 de novembro" aria-pressed="false"><span>Seg</span><strong>23</strong></button>
@@ -228,7 +228,7 @@
           <div class="avatar" data-bind="initials">AR</div>
           <div><strong data-bind="doctor">Dra. Ana Ribeiro</strong><span><span data-bind="esp">Pediatria</span> &middot; CRM 12345</span></div>
         </div>
-        <div class="slot-grid" id="slotGrid" aria-label="Horários disponíveis">
+        <div class="slot-grid" id="slotGrid" role="group" aria-label="Horários disponíveis">
           <button class="slot" type="button" data-time="08:00" aria-pressed="false">08:00</button>
           <button class="slot" type="button" data-time="08:40" aria-pressed="false">08:40</button>
           <button class="slot" type="button" data-time="09:20" aria-pressed="false">09:20</button>
@@ -259,8 +259,8 @@
         <form id="confirmForm">
           <div class="card">
             <div class="switch-row">
-              <div class="txt"><strong>Lembrete por WhatsApp</strong><span>Opcional. Não pedimos e-mail.</span></div>
-              <label class="switch"><input type="checkbox" id="whatsappToggle"><span></span></label>
+              <div class="txt"><strong id="waLabel">Lembrete por WhatsApp</strong><span id="waHint">Opcional. Não pedimos e-mail.</span></div>
+              <label class="switch"><input type="checkbox" id="whatsappToggle" role="switch" aria-labelledby="waLabel" aria-describedby="waHint"><span></span></label>
             </div>
             <div class="phone-field" id="phoneField" hidden>
               <label for="phone">Celular com WhatsApp</label>
@@ -314,10 +314,10 @@
       <section class="screen" id="screen-consultas" aria-labelledby="h-consultas">
         <h1 id="h-consultas" tabindex="-1">Minhas consultas</h1>
         <div class="tabs" role="tablist" aria-label="Consultas">
-          <button type="button" role="tab" aria-selected="true" id="tabUpcoming">Próximas</button>
-          <button type="button" role="tab" aria-selected="false" id="tabPast">Anteriores</button>
+          <button type="button" role="tab" aria-selected="true" aria-controls="upcoming" id="tabUpcoming">Próximas</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="past" tabindex="-1" id="tabPast">Anteriores</button>
         </div>
-        <div id="upcoming">
+        <div id="upcoming" role="tabpanel" aria-labelledby="tabUpcoming" tabindex="0">
           <div class="consult-card">
             <div class="consult-head"><strong>Clínico geral</strong><span class="status">Confirmada</span></div>
             <p class="consult-meta">24/11/2026, às 09:00<br>UBS Jardim das Flores &middot; Dr. Paulo Mendes<br>Protocolo CF-2026-001731</p>
@@ -335,7 +335,7 @@
             </div>
           </div>
         </div>
-        <div id="past" hidden>
+        <div id="past" role="tabpanel" aria-labelledby="tabPast" tabindex="0" hidden>
           <div class="consult-card canceled">
             <div class="consult-head"><strong>Enfermagem</strong><span class="status off">Realizada</span></div>
             <p class="consult-meta">12/09/2026, às 08:40<br>UBS Jardim das Flores &middot; Enf. Carla Lima</p>
@@ -345,7 +345,7 @@
             <p class="consult-meta">03/08/2026, às 15:00<br>UBS Boa Vista &middot; Dr. Bruno Alves</p>
           </div>
         </div>
-        <button class="btn btn-primary" type="button" data-go="ubs" style="margin-top:.5rem"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Agendar nova consulta</button>
+        <button class="btn btn-primary mt-50" type="button" data-go="ubs"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Agendar nova consulta</button>
       </section>
 
       <section class="screen" id="screen-agente" aria-labelledby="h-agente">
@@ -356,8 +356,8 @@
         <form id="agentForm" class="form">
           <div class="field"><label for="agentCpf">CPF do paciente</label><input id="agentCpf" type="text" inputmode="numeric" placeholder="000.000.000-00"></div>
           <div class="field"><label for="agentBirth">Data de nascimento</label><input id="agentBirth" type="text" inputmode="numeric" placeholder="dd/mm/aaaa"></div>
-          <label style="display:flex;gap:.6rem;align-items:flex-start;font-size:.88rem;margin:.6rem 0 .9rem;line-height:1.4">
-            <input type="checkbox" id="agentConsent" style="width:1.3rem;height:1.3rem;margin-top:.05rem;flex:0 0 auto;accent-color:#0b6b5b">
+          <label class="consent">
+            <input type="checkbox" id="agentConsent">
             <span>O paciente autorizou este agendamento e foi informado sobre o uso dos dados.</span>
           </label>
           <button class="btn btn-primary" type="submit">Continuar<svg aria-hidden="true"><use href="#i-next"/></svg></button>
@@ -386,7 +386,7 @@
         </div>
         <details><summary>Como protegemos seus dados</summary><p>Usamos CPF e data de nascimento para identificar você. O lembrete não informa diagnóstico. Você pode recusar o WhatsApp e pedir a exclusão do cadastro pelo 0800 ou na UBS.</p></details>
         <details><summary>O que fazer se a vaga for ocupada</summary><p>O sistema mostra outros horários e a fila de espera. Nenhuma cobrança é feita e seu cadastro continua válido.</p></details>
-        <button class="btn btn-secondary" type="button" data-go="inicio" style="margin-top:.4rem">Voltar ao início</button>
+        <button class="btn btn-secondary mt-40" type="button" data-go="inicio">Voltar ao início</button>
       </section>
     </main>
 
@@ -400,9 +400,9 @@
 <p class="prototype-caption">Protótipo navegável &middot; Consulta Fácil / Vale Verde &middot; dados fictícios</p>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+<div class="modal-backdrop" id="modalBackdrop">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <h2 id="modalTitle"></h2>
+    <h2 id="modalTitle">Aviso</h2>
     <div id="modalBody"></div>
     <div id="modalActions"></div>
     <button class="btn btn-quiet" type="button" data-close-modal>Fechar</button>
@@ -410,6 +410,7 @@
 </div>
 <div class="loading" id="loading" aria-live="polite"><div class="spinner"></div><p id="loadingText">Confirmando sua vaga...</p></div>
 
+<script src="validation.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

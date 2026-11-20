@@ -18,17 +18,29 @@ Telas específicas podem ser abertas direto pela URL, por exemplo `?tela=horario
 
 ## Rodar localmente
 
-Não há build nem dependências. Sirva a pasta `prototipo/` com qualquer servidor estático:
+Requer Node.js 20 ou superior.
 
 ```bash
-npx serve prototipo
-# ou
-python -m http.server -d prototipo 8000
+npm install        # instala ESLint e html-validate (só para desenvolvimento)
+npm start          # serve prototipo/ em http://localhost:8080
+npm run check      # lint de JS e HTML + testes
 ```
+
+O app não tem build: qualquer servidor estático apontado para `prototipo/` funciona (por exemplo `python -m http.server -d prototipo 8080`).
+
+## Estrutura do código
+
+| Arquivo | Responsabilidade |
+| --- | --- |
+| `prototipo/index.html` | Marcação das telas, com semântica e atributos ARIA |
+| `prototipo/styles.css` | Estilos, tema de alto contraste e layout responsivo |
+| `prototipo/validation.js` | Regras puras de validação (CPF, data de nascimento, telefone, máscaras) |
+| `prototipo/app.js` | Estado, navegação entre telas, modal, abas e formulários |
+| `tests/` | Testes das regras de validação (`node --test`) |
 
 ## Deploy
 
-Todo push na branch `main` que altere `prototipo/` dispara o workflow `.github/workflows/pages.yml`, que publica a pasta no GitHub Pages.
+O workflow `.github/workflows/pages.yml` roda lint e testes em todo push e pull request. Na branch `main`, se tudo passar, publica `prototipo/` no GitHub Pages.
 
 ## Licenças
 
