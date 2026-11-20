@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Consulta Fácil | Protótipo navegável</title>
+<meta name="description" content="Protótipo de agendamento de consultas da rede pública de Vale Verde, com cadastro sem e-mail, letras grandes e tela de vaga ocupada.">
+<meta name="theme-color" content="#0b6b5b">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-screen="entrar" class="bare">
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.7 9a2.4 2.4 0 1 1 3.5 2.2c-.8.4-1.2 1-1.2 1.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L20 6.8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v5M12 17.5v.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3h3l1.4 4.2-2 1.4a15 15 0 0 0 6.4 6.4l1.4-2L21 14.4v3A3.6 3.6 0 0 1 17.4 21 14.4 14.4 0 0 1 3 6.6 3.6 3.6 0 0 1 6.6 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="4.2" r="2.2" fill="currentColor"/><path d="M4 8h16M12 8v5m0 0-3.5 8M12 13l3.5 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-stetho" viewBox="0 0 24 24"><path d="M5 3v6a5 5 0 0 0 10 0V3M10 14v2a5 5 0 0 0 5 5h1a4 4 0 0 0 4-4v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="13" r="2" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-baby" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 21c.5-5 2.2-7 5-7s4.5 2 5 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 8h.01M14 8h.01" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-syringe" viewBox="0 0 24 24"><path d="M14 4l6 6M17 7l-9.5 9.5L4 20l3.5-3.5L17 7ZM11 10l3 3M8 13l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tooth" viewBox="0 0 24 24"><path d="M12 3c-2 0-3 1-5 1S4 3 4 7c0 5 2 5 2.5 10 .2 2 2 2.2 2.4.4L10 13c.4-2 3.6-2 4 0l1.1 4.4c.4 1.8 2.2 1.6 2.4-.4C18 12 20 12 20 7c0-4-1-3-3-3s-3-1-5-1Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.6-3.2 7.8-8 9-4.8-1.2-8-4.4-8-9V6l8-3Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 12l2.4 2.4 4.6-4.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wait" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M8 3v5l4 4 4-4V3M8 21v-5l4-4 4 4v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.1 8A7 7 0 0 1 19 10M17.9 16A7 7 0 0 1 5 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18V3Z" fill="currentColor"/></symbol>
+</svg>
+
+<div class="stage">
+  <aside class="stage-aside" aria-label="Roteiro do protótipo">
+    <div class="kicker"><svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="14" fill="#0b6b5b"/><path d="M24 12v24M12 24h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/><circle cx="36" cy="12" r="5" fill="#f2b11b"/></svg>Consulta Fácil · Vale Verde</div>
+    <h2>Agendar consulta sem e-mail e sem fila.</h2>
+    <p>Protótipo navegável do estudo de caso A3. Siga o roteiro ou use o aplicativo ao lado como um paciente faria.</p>
+    <ol class="route">
+      <li><button type="button" data-route="entrar"><span>01</span><div><strong>Entrada sem e-mail</strong><small>CPF e data de nascimento</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="inicio"><span>02</span><div><strong>Início</strong><small>Próxima consulta e atalhos</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="ubs"><span>03</span><div><strong>Escolha da UBS</strong><small>Bairro, distância e agente</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="horarios"><span>04</span><div><strong>Horários</strong><small>Última vaga sinalizada</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="vaga-ocupada"><span>05</span><div><strong>Vaga ocupada</strong><small>Resposta 409 com alternativas</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="comprovante"><span>06</span><div><strong>Comprovante</strong><small>Não depende do WhatsApp</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+      <li><button type="button" data-route="ajuda"><span>07</span><div><strong>Ajuda e acessibilidade</strong><small>Letra maior, contraste, telefone</small></div><svg aria-hidden="true"><use href="#i-next"/></svg></button></li>
+    </ol>
+    <p class="stage-note">Dados fictícios. Sem servidor e sem integração real com o SIGA-Saúde.</p>
+  </aside>
+  <div class="phone" id="app">
+    <div class="a11y-strip">
+      <span class="a11y-label"><svg aria-hidden="true"><use href="#i-access"/></svg>Acessibilidade</span>
+      <div class="a11y-tools">
+        <button type="button" id="fontDown" aria-label="Diminuir tamanho da letra">A-</button>
+        <button type="button" id="fontUp" aria-label="Aumentar tamanho da letra">A+</button>
+        <button type="button" id="contrastBtn" aria-label="Ativar alto contraste" aria-pressed="false"><svg style="width:1rem;height:1rem;vertical-align:-.15rem" aria-hidden="true"><use href="#i-contrast"/></svg></button>
+      </div>
+    </div>
+
+    <header class="app-header">
+      <button class="brand" type="button" data-go="inicio" aria-label="Consulta Fácil, ir para o início">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="14" fill="#0b6b5b"/><path d="M24 12v24M12 24h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/><circle cx="36" cy="12" r="5" fill="#f2b11b"/></svg>
+        <span>Consulta Fácil<small>Vale Verde</small></span>
+      </button>
+      <button class="header-help" type="button" data-go="ajuda"><svg aria-hidden="true"><use href="#i-help"/></svg>Ajuda</button>
+    </header>
+
+    <main id="conteudo">
+      <section class="screen active" id="screen-entrar" aria-labelledby="h-entrar">
+        <div class="hero">
+          <div class="logo-line">
+            <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="14" fill="#0b6b5b"/><path d="M24 12v24M12 24h24" stroke="#fff" stroke-width="6" stroke-linecap="round"/><circle cx="36" cy="12" r="5" fill="#f2b11b"/></svg>
+            <div><strong>Consulta Fácil</strong><small>Secretaria de Saúde de Vale Verde</small></div>
+          </div>
+          <p class="eyebrow">Agendamento online</p>
+          <h1 id="h-entrar" tabindex="-1">Sua consulta, sem fila.</h1>
+          <p>Agende, reagende ou cancele pelo celular. <strong>Não pedimos e-mail.</strong></p>
+          <span class="badge"><svg aria-hidden="true"><use href="#i-check"/></svg>Atendimento gratuito</span>
+        </div>
+
+        <form id="loginForm" class="form" novalidate>
+          <div class="field-error" id="loginError" role="alert"></div>
+          <div class="field">
+            <label for="cpf">CPF</label>
+            <input id="cpf" name="cpf" type="text" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" aria-describedby="cpfHint">
+            <p class="hint" id="cpfHint">Só o CPF e a data de nascimento. Sem cadastro complicado.</p>
+          </div>
+          <div class="field">
+            <label for="birth">Data de nascimento</label>
+            <input id="birth" name="birth" type="text" inputmode="numeric" autocomplete="off" placeholder="dd/mm/aaaa">
+          </div>
+          <button class="btn btn-primary" type="submit">Entrar<svg aria-hidden="true"><use href="#i-next"/></svg></button>
+          <button class="btn btn-quiet" type="button" id="demoBtn">Preencher dados de demonstração</button>
+        </form>
+
+        <div class="divider">ou</div>
+        <button class="btn btn-secondary" type="button" data-go="agente"><svg aria-hidden="true"><use href="#i-user"/></svg>Sou agente de saúde</button>
+        <div class="help-box"><svg aria-hidden="true"><use href="#i-phone"/></svg><span>Não tem celular ou precisa de ajuda? Ligue <strong>0800 123 4567</strong> ou vá à UBS mais próxima.</span></div>
+        <p class="lgpd"><svg aria-hidden="true"><use href="#i-shield"/></svg>Seus dados são usados para agendar e avisar sobre consultas. Você pode pedir para apagar seu cadastro a qualquer momento.</p>
+      </section>
+
+      <section class="screen" id="screen-inicio" aria-labelledby="h-inicio">
+        <div class="home-top">
+          <div>
+            <p class="eyebrow">Quinta, 19 de novembro</p>
+            <h1 id="h-inicio" tabindex="-1">Olá, <span data-bind="name">Maria</span></h1>
+            <p>O que você precisa hoje?</p>
+          </div>
+          <div class="avatar" aria-hidden="true">MS</div>
+        </div>
+
+        <div class="next">
+          <div class="next-top"><span class="next-label">Próxima consulta</span><span class="pill"><svg aria-hidden="true"><use href="#i-check"/></svg>Confirmada</span></div>
+          <div class="next-main">
+            <div class="date-block"><strong>24</strong><span>nov</span></div>
+            <div><h2>09:00 &middot; Clínico geral</h2><p>UBS Jardim das Flores &middot; Dr. Paulo Mendes</p></div>
+          </div>
+          <button class="btn" type="button" data-go="consultas">Ver detalhes</button>
+        </div>
+
+        <div class="section-title"><h2>O que você quer fazer?</h2></div>
+        <div class="action-grid">
+          <button class="action primary" type="button" data-go="ubs">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-calendar"/></svg></span>
+            <strong>Agendar consulta</strong><span>Escolha UBS, especialidade e horário</span>
+          </button>
+          <button class="action" type="button" data-go="consultas">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-list"/></svg></span>
+            <strong>Minhas consultas</strong><span>Ver, remarcar ou cancelar</span>
+          </button>
+          <button class="action" type="button" data-modal="waitlist">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-wait"/></svg></span>
+            <strong>Fila de espera</strong><span>Avisamos quando abrir vaga</span>
+          </button>
+          <button class="action" type="button" data-go="ajuda">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-help"/></svg></span>
+            <strong>Ajuda</strong><span>Letra maior, telefone e LGPD</span>
+          </button>
+        </div>
+        <div class="help-box"><svg aria-hidden="true"><use href="#i-phone"/></svg><span>Prefere falar com alguém? Ligue <strong>0800 123 4567</strong>, das 7h às 19h.</span></div>
+      </section>
+
+      <section class="screen" id="screen-ubs" aria-labelledby="h-ubs">
+        <button class="back" type="button" data-go="inicio"><svg aria-hidden="true"><use href="#i-back"/></svg>Início</button>
+        <div class="steps" aria-hidden="true"><span class="now"></span><span></span><span></span></div>
+        <p class="eyebrow">Passo 1 de 3</p>
+        <h1 id="h-ubs" tabindex="-1">Qual UBS você prefere?</h1>
+        <p class="lead">Escolha a UBS mais perto de você. Todas têm atendimento presencial.</p>
+        <div class="search"><svg aria-hidden="true"><use href="#i-search"/></svg><input id="ubsSearch" type="search" placeholder="Buscar UBS ou bairro" aria-label="Buscar UBS ou bairro"></div>
+        <div id="ubsList">
+          <button class="list-card" type="button" data-ubs="UBS Jardim das Flores" data-short="Jardim das Flores" data-district="Centro" data-distance="1,2 km">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+            <span class="txt"><strong>UBS Jardim das Flores</strong><span>Centro &middot; 1,2 km</span><span class="tag">Mais próxima</span></span>
+            <span class="right">Hoje<svg class="chev" aria-hidden="true"><use href="#i-next"/></svg></span>
+          </button>
+          <button class="list-card" type="button" data-ubs="UBS São José" data-short="São José" data-district="Vila Nova" data-distance="2,8 km">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+            <span class="txt"><strong>UBS São José</strong><span>Vila Nova &middot; 2,8 km</span></span>
+            <span class="right">Hoje<svg class="chev" aria-hidden="true"><use href="#i-next"/></svg></span>
+          </button>
+          <button class="list-card" type="button" data-ubs="UBS Boa Vista" data-short="Boa Vista" data-district="Boa Vista" data-distance="3,5 km">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+            <span class="txt"><strong>UBS Boa Vista</strong><span>Boa Vista &middot; 3,5 km</span></span>
+            <span class="right">Amanhã<svg class="chev" aria-hidden="true"><use href="#i-next"/></svg></span>
+          </button>
+          <p class="help-box" id="noUbs" hidden>Nenhuma UBS encontrada. Tente outro bairro ou ligue 0800 123 4567.</p>
+        </div>
+        <div class="help-card" style="margin-top:.75rem">
+          <span class="ico"><svg aria-hidden="true"><use href="#i-user"/></svg></span>
+          <div><strong>Precisa de ajuda para escolher?</strong><p>Um agente de saúde pode agendar em seu nome. O atendimento é gratuito.</p><button class="link" type="button" data-go="agente">Atendimento com agente</button></div>
+        </div>
+        <p class="tiny" style="margin-top:.8rem">Não sabe qual escolher? Ligue para a central e informe seu bairro.</p>
+      </section>
+
+      <section class="screen" id="screen-especialidade" aria-labelledby="h-esp">
+        <button class="back" type="button" data-go="ubs"><svg aria-hidden="true"><use href="#i-back"/></svg>UBS</button>
+        <div class="steps" aria-hidden="true"><span class="done"></span><span class="now"></span><span></span></div>
+        <p class="eyebrow">Passo 2 de 3</p>
+        <h1 id="h-esp" tabindex="-1">Qual atendimento você precisa?</h1>
+        <div class="chip-summary"><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-bind="ubs">UBS Jardim das Flores</span></div>
+        <div class="spec-grid">
+          <button class="list-card" type="button" data-esp="Clínico geral" data-doctor="Dr. Paulo Mendes" data-initials="PM">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-stetho"/></svg></span>
+            <span class="txt"><strong>Clínico geral</strong><span>Consulta com clínico da família</span></span>
+            <span class="right">Hoje<svg class="chev" aria-hidden="true"><use href="#i-next"/></svg></span>
+          </button>
+          <button class="list-card" type="button" data-esp="Pediatria" data-doctor="Dra. Ana Ribeiro" data-initials="AR">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-baby"/></svg></span>
+            <span class="txt"><strong>Pediatria</strong><span>Para crianças de 0 a 12 anos</span><span class="tag">1 vaga amanhã</span></span>
+            <span class="right">Sex<svg class="chev" aria-hidden="true"><use href="#i-next"/></svg></span>
+          </button>
+          <button class="list-card" type="button" data-esp="Enfermagem" data-doctor="Enf. Carla Lima" data-initials="CL">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-syringe"/></svg></span>
+            <span class="txt"><strong>Enfermagem</strong><span>Curativos, vacinas e pré-natal</span></span>
+            <span class="right">Hoje<svg class="chev" aria-hidden="true"><use href="#i-next"/></svg></span>
+          </button>
+          <button class="list-card" type="button" data-esp="Odontologia" data-doctor="Dr. Bruno Alves" data-initials="BA">
+            <span class="ico"><svg aria-hidden="true"><use href="#i-tooth"/></svg></span>
+            <span class="txt"><strong>Odontologia</strong><span>Avaliação e tratamento dentário</span></span>
+            <span class="right">Seg<svg class="chev" aria-hidden="true"><use href="#i-next"/></svg></span>
+          </button>
+        </div>
+        <button class="link" type="button" data-modal="specHelp">Não sei qual escolher</button>
+      </section>
+
+      <section class="screen" id="screen-horarios" aria-labelledby="h-horarios">
+        <button class="back" type="button" data-go="especialidade"><svg aria-hidden="true"><use href="#i-back"/></svg>Especialidade</button>
+        <div class="steps" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="now"></span></div>
+        <p class="eyebrow">Passo 3 de 3</p>
+        <h1 id="h-horarios" tabindex="-1">Escolha o horário</h1>
+        <div class="chip-summary"><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-bind="ubs">UBS Jardim das Flores</span> &middot; <span data-bind="esp">Pediatria</span></div>
+        <div class="date-strip" id="dateStrip" aria-label="Dias disponíveis">
+          <button class="date-chip" type="button" data-date="Qui, 19 de novembro" aria-pressed="false"><span>Hoje</span><strong>19</strong></button>
+          <button class="date-chip" type="button" data-date="Sex, 20 de novembro" aria-pressed="true"><span>Sex</span><strong>20</strong></button>
+          <button class="date-chip" type="button" data-date="Seg, 23 de novembro" aria-pressed="false"><span>Seg</span><strong>23</strong></button>
+          <button class="date-chip" type="button" data-date="Ter, 24 de novembro" aria-pressed="false"><span>Ter</span><strong>24</strong></button>
+          <button class="date-chip" type="button" data-date="Qua, 25 de novembro" aria-pressed="false"><span>Qua</span><strong>25</strong></button>
+        </div>
+        <div class="doctor">
+          <div class="avatar" data-bind="initials">AR</div>
+          <div><strong data-bind="doctor">Dra. Ana Ribeiro</strong><span><span data-bind="esp">Pediatria</span> &middot; CRM 12345</span></div>
+        </div>
+        <div class="slot-grid" id="slotGrid" aria-label="Horários disponíveis">
+          <button class="slot" type="button" data-time="08:00" aria-pressed="false">08:00</button>
+          <button class="slot" type="button" data-time="08:40" aria-pressed="false">08:40</button>
+          <button class="slot" type="button" data-time="09:20" aria-pressed="false">09:20</button>
+          <button class="slot" type="button" data-time="14:20" aria-pressed="false">14:20<small>Última vaga</small></button>
+          <button class="slot" type="button" data-time="15:00" disabled>15:00<small>Ocupado</small></button>
+          <button class="slot" type="button" data-time="16:20" aria-pressed="false">16:20</button>
+        </div>
+        <p class="slot-note" id="slotWarning" hidden><svg aria-hidden="true"><use href="#i-alert"/></svg><span>Esta é a última vaga. Se outra pessoa confirmar antes, você verá outras opções.</span></p>
+        <button class="btn btn-quiet" type="button" data-modal="waitlist">Não encontrou? Entrar na fila de espera</button>
+        <div class="cta-bar">
+          <button class="btn btn-primary" type="button" id="continueBtn" disabled>Continuar<svg aria-hidden="true"><use href="#i-next"/></svg></button>
+          <p class="hint">Você só confirma na próxima tela.</p>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-confirmar" aria-labelledby="h-confirmar">
+        <button class="back" type="button" data-go="horarios"><svg aria-hidden="true"><use href="#i-back"/></svg>Horário</button>
+        <h1 id="h-confirmar" tabindex="-1">Confirme sua consulta</h1>
+        <p class="lead">Confira os dados. Se algo estiver errado, volte e escolha outro horário.</p>
+        <div class="summary">
+          <div class="summary-row"><span>Data</span><strong data-bind="date">Sex, 20 de novembro</strong></div>
+          <div class="summary-row"><span>Hora</span><strong data-bind="time">14:20</strong></div>
+          <div class="summary-row"><span>Especialidade</span><strong data-bind="esp">Pediatria</strong></div>
+          <div class="summary-row"><span>UBS</span><strong data-bind="ubs">UBS Jardim das Flores</strong></div>
+          <div class="summary-row"><span>Profissional</span><strong data-bind="doctor">Dra. Ana Ribeiro</strong></div>
+          <div class="summary-row"><span>Paciente</span><strong data-bind="name">Maria</strong></div>
+        </div>
+        <form id="confirmForm">
+          <div class="card">
+            <div class="switch-row">
+              <div class="txt"><strong>Lembrete por WhatsApp</strong><span>Opcional. Não pedimos e-mail.</span></div>
+              <label class="switch"><input type="checkbox" id="whatsappToggle"><span></span></label>
+            </div>
+            <div class="phone-field" id="phoneField" hidden>
+              <label for="phone">Celular com WhatsApp</label>
+              <input id="phone" type="tel" inputmode="tel" value="(11) 98888-7777" autocomplete="tel">
+            </div>
+          </div>
+          <div class="confirm-note"><svg aria-hidden="true"><use href="#i-shield"/></svg><span>O comprovante fica salvo no aplicativo. Se o WhatsApp falhar, sua consulta continua confirmada.</span></div>
+          <div class="cta-bar">
+            <button class="btn btn-primary" type="submit" id="confirmBtn">Confirmar agendamento</button>
+            <p class="hint">Chegue 15 minutos antes com um documento com foto.</p>
+          </div>
+        </form>
+      </section>
+
+      <section class="screen" id="screen-vaga-ocupada" aria-labelledby="h-vaga">
+        <div class="alert-hero">
+          <div class="alert-ico"><svg aria-hidden="true"><use href="#i-alert"/></svg></div>
+          <h1 id="h-vaga" tabindex="-1">Essa vaga acabou de ser ocupada.</h1>
+          <p>Outra pessoa confirmou <strong data-bind="time">14:20</strong> enquanto você finalizava. Nada foi cobrado e seus dados continuam salvos.</p>
+        </div>
+        <div class="alt-box">
+          <h2>Horários livres em <span data-bind="dateShort">sex, 20/11</span></h2>
+          <button class="alt-slot" type="button" data-alt-time="09:20">09:20<span>Escolher</span></button>
+          <button class="alt-slot" type="button" data-alt-time="16:20">16:20<span>Escolher</span></button>
+        </div>
+        <button class="btn btn-primary" type="button" id="seeOtherTimes">Ver todos os horários</button>
+        <button class="btn btn-secondary" type="button" data-modal="waitlist"><svg aria-hidden="true"><use href="#i-wait"/></svg>Entrar na fila de espera</button>
+        <button class="btn btn-quiet" type="button" data-modal="phone">Falar com a UBS</button>
+      </section>
+
+      <section class="screen" id="screen-comprovante" aria-labelledby="h-comprovante">
+        <div class="success-hero">
+          <div class="success-ico"><svg aria-hidden="true"><use href="#i-check"/></svg></div>
+          <h1 id="h-comprovante" tabindex="-1">Consulta confirmada</h1>
+          <p>Guarde este comprovante. Ele fica salvo no aplicativo.</p>
+        </div>
+        <div class="protocol"><span>Protocolo</span><strong id="protocol">CF-2026-001842</strong></div>
+        <div class="summary">
+          <div class="summary-row"><span>Data e hora</span><strong><span data-bind="date">Sex, 20 de novembro</span>, <span data-bind="time">14:20</span></strong></div>
+          <div class="summary-row"><span>Especialidade</span><strong data-bind="esp">Pediatria</strong></div>
+          <div class="summary-row"><span>UBS</span><strong data-bind="ubs">UBS Jardim das Flores</strong></div>
+          <div class="summary-row"><span>Profissional</span><strong data-bind="doctor">Dra. Ana Ribeiro</strong></div>
+          <div class="summary-row"><span>Paciente</span><strong data-bind="name">Maria</strong></div>
+        </div>
+        <div class="confirm-note"><svg aria-hidden="true"><use href="#i-message"/></svg><span>O lembrete por WhatsApp é um extra. Mesmo se o envio falhar, sua consulta está confirmada e o comprovante continua aqui.</span></div>
+        <button class="btn btn-primary" type="button" id="icsBtn"><svg aria-hidden="true"><use href="#i-download"/></svg>Adicionar ao calendário</button>
+        <button class="btn btn-secondary" type="button" data-go="inicio">Voltar ao início</button>
+        <p class="lgpd"><svg aria-hidden="true"><use href="#i-lock"/></svg>Este comprovante mostra apenas o necessário para o atendimento. A UBS vê o histórico clínico no SIGA-Saúde.</p>
+      </section>
+
+      <section class="screen" id="screen-consultas" aria-labelledby="h-consultas">
+        <h1 id="h-consultas" tabindex="-1">Minhas consultas</h1>
+        <div class="tabs" role="tablist" aria-label="Consultas">
+          <button type="button" role="tab" aria-selected="true" id="tabUpcoming">Próximas</button>
+          <button type="button" role="tab" aria-selected="false" id="tabPast">Anteriores</button>
+        </div>
+        <div id="upcoming">
+          <div class="consult-card">
+            <div class="consult-head"><strong>Clínico geral</strong><span class="status">Confirmada</span></div>
+            <p class="consult-meta">24/11/2026, às 09:00<br>UBS Jardim das Flores &middot; Dr. Paulo Mendes<br>Protocolo CF-2026-001731</p>
+            <div class="consult-actions">
+              <button class="btn btn-secondary" type="button" data-go="horarios">Remarcar</button>
+              <button class="btn btn-secondary" type="button" data-modal="cancel">Cancelar</button>
+            </div>
+          </div>
+          <div class="consult-card">
+            <div class="consult-head"><strong>Pediatria</strong><span class="status">Confirmada</span></div>
+            <p class="consult-meta">04/12/2026, às 10:20<br>UBS São José &middot; Dra. Ana Ribeiro<br>Protocolo CF-2026-001988</p>
+            <div class="consult-actions">
+              <button class="btn btn-secondary" type="button" data-go="horarios">Remarcar</button>
+              <button class="btn btn-secondary" type="button" data-modal="cancel">Cancelar</button>
+            </div>
+          </div>
+        </div>
+        <div id="past" hidden>
+          <div class="consult-card canceled">
+            <div class="consult-head"><strong>Enfermagem</strong><span class="status off">Realizada</span></div>
+            <p class="consult-meta">12/09/2026, às 08:40<br>UBS Jardim das Flores &middot; Enf. Carla Lima</p>
+          </div>
+          <div class="consult-card canceled">
+            <div class="consult-head"><strong>Odontologia</strong><span class="status off">Cancelada por você</span></div>
+            <p class="consult-meta">03/08/2026, às 15:00<br>UBS Boa Vista &middot; Dr. Bruno Alves</p>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="button" data-go="ubs" style="margin-top:.5rem"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Agendar nova consulta</button>
+      </section>
+
+      <section class="screen" id="screen-agente" aria-labelledby="h-agente">
+        <button class="back" type="button" data-go="entrar"><svg aria-hidden="true"><use href="#i-back"/></svg>Entrar</button>
+        <p class="eyebrow">Atendimento assistido</p>
+        <h1 id="h-agente" tabindex="-1">Agendar para outra pessoa</h1>
+        <p class="lead">Agentes de saúde e recepção usam esta opção com a autorização do paciente. O CPF continua sendo a chave de identificação.</p>
+        <form id="agentForm" class="form">
+          <div class="field"><label for="agentCpf">CPF do paciente</label><input id="agentCpf" type="text" inputmode="numeric" placeholder="000.000.000-00"></div>
+          <div class="field"><label for="agentBirth">Data de nascimento</label><input id="agentBirth" type="text" inputmode="numeric" placeholder="dd/mm/aaaa"></div>
+          <label style="display:flex;gap:.6rem;align-items:flex-start;font-size:.88rem;margin:.6rem 0 .9rem;line-height:1.4">
+            <input type="checkbox" id="agentConsent" style="width:1.3rem;height:1.3rem;margin-top:.05rem;flex:0 0 auto;accent-color:#0b6b5b">
+            <span>O paciente autorizou este agendamento e foi informado sobre o uso dos dados.</span>
+          </label>
+          <button class="btn btn-primary" type="submit">Continuar<svg aria-hidden="true"><use href="#i-next"/></svg></button>
+        </form>
+        <div class="help-box"><svg aria-hidden="true"><use href="#i-shield"/></svg><span>O agente não vê o prontuário. Vê apenas o necessário para marcar a consulta.</span></div>
+      </section>
+
+      <section class="screen" id="screen-ajuda" aria-labelledby="h-ajuda">
+        <h1 id="h-ajuda" tabindex="-1">Ajuda e acessibilidade</h1>
+        <p class="lead">Ajuste a tela do seu jeito ou fale com a UBS.</p>
+        <div class="help-card">
+          <span class="ico"><svg aria-hidden="true"><use href="#i-access"/></svg></span>
+          <div><strong>Letra maior</strong><p>Aumente o texto sem perder nenhuma informação.</p><button class="link" type="button" id="helpFont">Aumentar letra</button></div>
+        </div>
+        <div class="help-card">
+          <span class="ico"><svg aria-hidden="true"><use href="#i-contrast"/></svg></span>
+          <div><strong>Alto contraste</strong><p>Fundo escuro e texto claro para quem tem baixa visão.</p><button class="link" type="button" id="helpContrast">Ativar contraste</button></div>
+        </div>
+        <div class="help-card">
+          <span class="ico"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>
+          <div><strong>Atendimento por telefone</strong><p>Central de agendamento: 0800 123 4567, das 7h às 19h.</p><button class="link" type="button" id="callBtn">Ver formas de atendimento</button></div>
+        </div>
+        <div class="help-card">
+          <span class="ico"><svg aria-hidden="true"><use href="#i-user"/></svg></span>
+          <div><strong>Atendimento presencial</strong><p>Qualquer UBS pode marcar em seu nome. Leve documento com foto e cartão do SUS.</p></div>
+        </div>
+        <details><summary>Como protegemos seus dados</summary><p>Usamos CPF e data de nascimento para identificar você. O lembrete não informa diagnóstico. Você pode recusar o WhatsApp e pedir a exclusão do cadastro pelo 0800 ou na UBS.</p></details>
+        <details><summary>O que fazer se a vaga for ocupada</summary><p>O sistema mostra outros horários e a fila de espera. Nenhuma cobrança é feita e seu cadastro continua válido.</p></details>
+        <button class="btn btn-secondary" type="button" data-go="inicio" style="margin-top:.4rem">Voltar ao início</button>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="Navegação principal">
+      <button type="button" data-go="inicio" aria-current="page"><svg aria-hidden="true"><use href="#i-home"/></svg>Início</button>
+      <button type="button" data-go="consultas"><svg aria-hidden="true"><use href="#i-calendar"/></svg>Consultas</button>
+      <button type="button" data-go="ajuda"><svg aria-hidden="true"><use href="#i-help"/></svg>Ajuda</button>
+    </nav>
+  </div>
+</div>
+<p class="prototype-caption">Protótipo navegável &middot; Consulta Fácil / Vale Verde &middot; dados fictícios</p>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+    <div id="modalActions"></div>
+    <button class="btn btn-quiet" type="button" data-close-modal>Fechar</button>
+  </div>
+</div>
+<div class="loading" id="loading" aria-live="polite"><div class="spinner"></div><p id="loadingText">Confirmando sua vaga...</p></div>
+
+<script src="app.js"></script>
+</body>
+</html>

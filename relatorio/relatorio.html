@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Consulta Fácil | A3 Estudo de caso</title>
+<meta name="author" content="Grupo A3">
+<meta name="description" content="Relatório de análise e protótipo do Consulta Fácil, sistema de agendamento de consultas de Vale Verde.">
+<link rel="stylesheet" href="report.css">
+</head>
+<body>
+
+<!-- CAPA -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="cover-kicker">Modelos, Métodos e Técnicas da Engenharia de Software</div>
+    <div class="cover-brand">
+      <svg class="cover-mark" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="14" fill="#ffffff" opacity=".14"/><path d="M24 11v26M11 24h26" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/><circle cx="37" cy="11" r="5" fill="#f4b400"/></svg>
+      <div><strong>Consulta Fácil</strong><span>Vale Verde</span></div>
+    </div>
+    <h1>Plano de engenharia para o agendamento de consultas na rede pública</h1>
+    <p class="sub">A3, estudo de caso aplicado: diagnóstico, processo, requisitos, arquitetura, organização ágil e operação.</p>
+  </div>
+  <div class="cover-body">
+    <div class="cover-meta">
+      <div><span>Professor</span><strong>Alexandre de Cássio Rodrigues</strong></div>
+      <div><span>Entrega</span><strong>21 de novembro de 2026</strong></div>
+      <div><span>Avaliação</span><strong>A3, 40 pontos</strong></div>
+    </div>
+    <h2>Integrantes do grupo</h2>
+    <table class="cover-table">
+      <thead><tr><th style="width:72%">Nome completo</th><th>RA</th></tr></thead>
+      <tbody>
+        <tr><td>[nome completo]</td><td>[RA]</td></tr>
+        <tr><td>[nome completo]</td><td>[RA]</td></tr>
+        <tr><td>[nome completo]</td><td>[RA]</td></tr>
+        <tr><td>[nome completo]</td><td>[RA]</td></tr>
+        <tr><td>[nome completo]</td><td>[RA]</td></tr>
+      </tbody>
+    </table>
+    <p class="cover-note">O relatório tem quatro páginas de análise e dois apêndices: o protótipo navegável, com capturas de tela, e a declaração de uso de IA com as referências.</p>
+  </div>
+  <div class="cover-foot"><span>Vale Verde, novembro de 2026</span><span class="cover-stamp">Documento de entrega</span></div>
+</section>
+
+<!-- CORPO: TAREFAS 1 A 6 -->
+<div class="report">
+  <div class="report-head"><span><strong>Consulta Fácil</strong> | Relatório de análise</span><span>A3 2026</span></div>
+
+  <div class="premises"><strong>Premissas.</strong> O SIGA-Saúde roda MySQL 5.7, sem API. O provedor de SMS e WhatsApp tem API com recibo de entrega. As sprints duram duas semanas. O gov.br entra como login opcional. Testes usam cópia mascarada. Onde o caso não fixa um número, o relatório declara a hipótese.</div>
+  <h2><span class="num">1</span>Diagnóstico do piloto</h2>
+  <p>Vale Verde tem 210 mil habitantes e 32 UBS. Às 7h, 4 mil pessoas tentam liberar as vagas da semana e 18% faltam às consultas. O piloto tratou o agendamento como uma tela nova sobre o SIGA: a demonstração usou dados de exemplo e o caminho sem erro. Em produção, duas confirmações caíram na mesma vaga e o SMS falhou.</p>
+
+  <p class="table-title"><strong>Tabela 1.</strong> Pessoas atingidas e o custo de cada falha.</p>
+  <table>
+    <thead><tr><th style="width:23%">Pessoa ou área</th><th style="width:42%">O que a falha fez com ela</th><th>O que deveria ter sido medido</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Paciente idoso</strong><br><span class="tiny">68 anos, sem e-mail</span></td><td>Travou no cadastro, perdeu a vaga e dependeu da filha. A tela pedia um dado que ela não tinha.</td><td>Conclusão por faixa de idade e tempo até o comprovante.</td></tr>
+      <tr><td><strong>Paciente trabalhador</strong></td><td>Não consegue ligar às 6h. Tentou às 7h, pegou o sistema lento e desistiu de marcar.</td><td>Sucesso no pico e desistência por etapa.</td></tr>
+      <tr><td><strong>Recepção e médico</strong></td><td>A recepcionista virou suporte e remarcou no papel. Duas famílias chegaram para a mesma consulta de pediatria.</td><td>Retrabalho, duplicidade por profissional e faltas por horário.</td></tr>
+      <tr><td><strong>Gestor, ouvidoria e DPO</strong></td><td>Souberam pela ouvidoria; o painel dizia que tudo estava bem. Reclamações sem protocolo nem log; o DPO não sabia quais dados iriam para o SMS.</td><td>Agendamentos concluídos e falhas por etapa; reclamações e retenção de dados.</td></tr>
+    </tbody>
+  </table>
+
+  <p>A demonstração provou que a tela ia de A a B. Não provou capacidade, consistência da vaga, resiliência do SMS nem conclusão por quem não tem e-mail. O painel media CPU, não agendamentos concluídos.</p>
+
+  <p class="table-title"><strong>Tabela 2.</strong> Três atributos de qualidade, a situação do caso e a evidência de atendimento.</p>
+  <table>
+    <thead><tr><th style="width:19%">Atributo</th><th style="width:39%">Situação em Vale Verde</th><th>Evidência que comprovaria o atendimento</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Desempenho e capacidade</strong></td><td>Às 7h, 4 mil pessoas tentam liberar as vagas da semana. O piloto ficou lento por quase duas horas.</td><td>Carga com 4 mil usuários por 30 min: p95 ≤ 2 s, erro &lt; 1% e 1.200 confirmações por hora.</td></tr>
+      <tr><td><strong>Consistência</strong></td><td>A última vaga de pediatria recebeu duas confirmações no primeiro dia.</td><td>200 pedidos simultâneos: uma resposta 201, 199 respostas 409 e uma linha confirmada.</td></tr>
+      <tr><td><strong>Acessibilidade</strong></td><td>Uma idosa sem e-mail não concluiu o cadastro. A tela exigia um campo que ela não tinha.</td><td>5 pessoas de 60+ sem e-mail: 90% concluem em até 3 min. WCAG 2.2 AA: teclado, zoom 200% e contraste ≥ 4,5:1.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box lgpd">
+    <p><strong>Risco de LGPD.</strong> O lembrete pode expor especialidade ou diagnóstico na tela bloqueada, em aparelho compartilhado ou em número errado. Dados de saúde são categoria especial (LGPD, art. 5º, II).</p>
+    <p><strong>Decisão.</strong> A mensagem diz apenas que há um lembrete no Consulta Fácil e pede CPF e data de nascimento para abrir. Opt-in no agendamento, celular confirmado, retenção de 90 dias e aprovação do DPO por modelo de texto. Quem não tem celular recebe ligação da UBS ou atendimento presencial. Acompanhamento mensal de opt-out, números errados, reclamações e amostra dos logs; revisão no fim do piloto e após incidente.</p>
+  </div>
+
+  <h2><span class="num">2</span>Processo e transição</h2>
+  <p><strong>Modelo.</strong> Scrum no produto, com práticas de XP e duas semanas de descoberta. Seis sprints até o piloto. A descoberta entrega o protótipo, o mapa do banco do SIGA e um walking skeleton somente leitura; depois vêm o fluxo de agendamento, a escrita no legado e os ensaios de migração. Kanban assume suporte e incidentes após o go-live.</p>
+  <p><strong>Por que este modelo.</strong> Três meses e um legado sem documentação impedem especificar tudo antes de ver o banco. Sprints curtas permitem testar usabilidade com idosos enquanto a integração é construída, e XP cobre teste, revisão por par e integração contínua. O risco central é o schema desconhecido: walking skeleton na sprint 1, perfilamento de CPF e agendas, contrato contra cópia mascarada e ADR-001 antes da reserva.</p>
+  <p><strong>Risco que fica em aberto.</strong> A operação no pico e a adoção pelas recepcionistas. Scrum não garante plantão às 7h nem mudança de processo; isso exige escala de suporte, runbook e treinamento.</p>
+
+  <p class="table-title"><strong>Tabela 3.</strong> Migração das agendas do SIGA em quatro etapas.</p>
+  <table>
+    <thead><tr><th style="width:16%">Etapa</th><th style="width:59%">O que fazer</th><th>Critério para avançar</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Preparar</strong></td><td>Inventariar tabelas; perfilhar CPF, telefone e agendas; definir registro mestre e reconciliação; backup com PITR; mascarar a cópia de teste; comunicar UBS e sindicato; fixar janela e rollback.</td><td>Tabelas mapeadas; restauração testada; reconciliação aprovada; DPO ciente.</td></tr>
+      <tr><td><strong>2. Ensaiar</strong></td><td>Três ensaios em cópia mascarada; scripts idempotentes rodados duas vezes; simulação de interrupção; tempo medido; conferência de contagens e checksums; restauração do backup.</td><td>Zero divergência nos sete dias seguintes; ensaio cabe na janela; segunda execução não duplica nada.</td></tr>
+      <tr><td><strong>3. Validar</strong></td><td>Sete dias em paralelo; comparação entre SIGA e sistema novo; a recepção valida 50 agendamentos por dia por UBS; conferir pacientes sem correspondência.</td><td>Zero vaga duplicada; zero consulta órfã; pacientes identificados ou na fila manual; aceite do gestor.</td></tr>
+      <tr><td><strong>4. Transicionar</strong></td><td>Corte por UBS com feature flag; SIGA em somente leitura; um dia sem marcação; migrar; hypercare de duas semanas; reconciliação diária; rollback se a divergência passar de 0,1%.</td><td>Três UBS estáveis por 14 dias; reconciliação limpa por sete dias; nenhum incidente de dado.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="num">3</span>Requisitos verificáveis</h2>
+  <p>Os cinco requisitos podem ser testados por outra pessoa sem consultar o grupo. RF cobre função, RNF desempenho e RA acessibilidade; cada linha traz o critério que fecha o teste.</p>
+
+  <p class="table-title"><strong>Tabela 4.</strong> Requisitos funcionais, não funcional e de acessibilidade.</p>
+  <table>
+    <thead><tr><th style="width:10%">ID</th><th>Requisito e critério de aceitação</th></tr></thead>
+    <tbody>
+      <tr><td><strong>RF-01</strong><br><span class="tiny">Funcional</span></td><td>Entrar com CPF e data de nascimento e concluir o agendamento sem informar e-mail. Critério: confirmação em até 30 s com protocolo; telefone opcional; dados incompatíveis geram mensagem genérica e o telefone da UBS.</td></tr>
+      <tr><td><strong>RF-02</strong><br><span class="tiny">Funcional</span></td><td>Confirmar no máximo um agendamento por vaga, mesmo com pedidos simultâneos. O segundo pedido recebe 409 com até três alternativas.</td></tr>
+      <tr><td><strong>RF-03</strong><br><span class="tiny">Funcional</span></td><td>Cancelar ou remarcar até 12 h antes; depois disso, a tela bloqueia, explica a regra e oferece o telefone da UBS. Depois de três cancelamentos em 30 dias, mostrar aviso e oferecer atendimento assistido, sem bloquear o cancelamento.</td></tr>
+      <tr><td><strong>RNF-01</strong><br><span class="tiny">Desempenho</span></td><td>Com 4.000 usuários simultâneos às 7h, 95% das requisições de agendamento respondem em até 2 s e o erro fica abaixo de 1%, por 30 min.</td></tr>
+      <tr><td><strong>RA-01</strong><br><span class="tiny">Acessibilidade</span></td><td>Atender à WCAG 2.2 AA: contraste ≥ 4,5:1, teclado, zoom 200%, erros em texto e nenhum e-mail obrigatório. Critério: 90% de conclusão no teste moderado com 5 pessoas de 60+.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="table-title"><strong>Tabela 5.</strong> Casos de aceitação da vaga e do cancelamento repetido.</p>
+  <table>
+    <thead><tr><th style="width:34%">Situação</th><th style="width:26%">Ação</th><th>Resultado esperado</th></tr></thead>
+    <tbody>
+      <tr><td>Duas pessoas confirmam a última vaga no mesmo segundo, ou uma tela antiga ainda mostra a vaga livre.</td><td>POST simultâneo; a segunda confirma 30 s depois.</td><td>Uma recebe 201 com protocolo, a outra 409 com três alternativas; uma única linha confirmada. Repetir com a mesma Idempotency-Key devolve o mesmo protocolo.</td></tr>
+      <tr><td>Quarto cancelamento em 30 dias.</td><td>Toca Cancelar.</td><td>Aviso com histórico e oferta de atendimento assistido; confirmação explícita libera o cancelamento.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <p><strong>Como o teste roda.</strong> Cópia mascarada do SIGA, script com 200 pedidos para a mesma vaga e consulta SQL de invariantes. O resultado fica anexado à história. Rastreabilidade: falha do piloto, RF-02, índice único parcial, UPDATE condicional e Idempotency-Key, teste com uma resposta 201 e 199 respostas 409. Acessibilidade: cinco tarefas com pessoas de 60+ e sem e-mail.</p>
+  </div>
+
+  <h2><span class="num">4</span>Arquitetura e padrões</h2>
+  <p>Monólito modular com banco relacional e um worker de notificações. O diagrama mostra quem usa o sistema, o limite dos dados de saúde e os três serviços externos.</p>
+
+  <svg class="diagram" viewBox="0 0 640 236" role="img" aria-labelledby="diagramTitle diagramDesc">
+    <title id="diagramTitle">Diagrama de contexto do Consulta Fácil</title>
+    <desc id="diagramDesc">Paciente, agente de saúde e gestor acessam o Consulta Fácil. O sistema conversa com o SIGA-Saúde, o provedor de SMS e WhatsApp e o gov.br.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5f7d75"/></marker>
+    </defs>
+    <rect x="170" y="12" width="280" height="212" rx="10" fill="#f7fbfa" stroke="#b37a00" stroke-width="1.2" stroke-dasharray="5 3"/>
+    <text x="310" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#0b6b5b">Consulta Fácil</text>
+    <text x="310" y="41" text-anchor="middle" font-size="8" fill="#526762">monólito modular</text>
+
+    <rect x="185" y="48" width="250" height="26" rx="5" fill="#0b6b5b"/>
+    <text x="310" y="65" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">Portal e aplicativo</text>
+
+    <rect x="185" y="84" width="115" height="34" rx="5" fill="#eaf4f1" stroke="#9fc5bb"/>
+    <text x="242" y="99" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">API de agendamento</text>
+    <text x="242" y="111" text-anchor="middle" font-size="7.6" fill="#526762">login, validação, 409</text>
+
+    <rect x="320" y="84" width="115" height="34" rx="5" fill="#eaf4f1" stroke="#9fc5bb"/>
+    <text x="377" y="99" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">Motor de vagas</text>
+    <text x="377" y="111" text-anchor="middle" font-size="7.6" fill="#526762">transação e idempotência</text>
+
+    <rect x="185" y="126" width="115" height="68" rx="5" fill="#ffffff" stroke="#9fc5bb"/>
+    <text x="242" y="143" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">PostgreSQL</text>
+    <text x="242" y="156" text-anchor="middle" font-size="7.6" fill="#526762">agenda e cadastro</text>
+    <text x="242" y="168" text-anchor="middle" font-size="7.6" fill="#526762">índice único por vaga</text>
+    <text x="242" y="180" text-anchor="middle" font-size="7.6" fill="#526762">backup e PITR</text>
+
+    <rect x="320" y="126" width="115" height="28" rx="5" fill="#eaf4f1" stroke="#9fc5bb"/>
+    <text x="377" y="144" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">Adapter SIGA</text>
+
+    <rect x="320" y="164" width="115" height="30" rx="5" fill="#eaf4f1" stroke="#9fc5bb"/>
+    <text x="377" y="179" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">Outbox + worker</text>
+    <text x="377" y="190" text-anchor="middle" font-size="7.4" fill="#526762">timeout, retry, breaker</text>
+
+    <text x="310" y="218" text-anchor="middle" font-size="7.2" fill="#8a6500">limite do sistema e dos dados de saúde (LGPD)</text>
+
+    <rect x="10" y="34" width="125" height="40" rx="6" fill="#ffffff" stroke="#9fc5bb"/>
+    <text x="72" y="52" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">Paciente</text>
+    <text x="72" y="64" text-anchor="middle" font-size="7.6" fill="#526762">app ou site</text>
+
+    <rect x="10" y="92" width="125" height="40" rx="6" fill="#ffffff" stroke="#9fc5bb"/>
+    <text x="72" y="110" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">Agente de saúde</text>
+    <text x="72" y="122" text-anchor="middle" font-size="7.6" fill="#526762">recepção da UBS</text>
+
+    <rect x="10" y="150" width="125" height="40" rx="6" fill="#ffffff" stroke="#9fc5bb"/>
+    <text x="72" y="168" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">Gestor e ouvidoria</text>
+    <text x="72" y="180" text-anchor="middle" font-size="7.6" fill="#526762">indicadores e reclamações</text>
+
+    <rect x="510" y="38" width="120" height="32" rx="6" fill="#ffffff" stroke="#9fc5bb"/>
+    <text x="570" y="55" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">gov.br</text>
+    <text x="570" y="65" text-anchor="middle" font-size="7.6" fill="#526762">login opcional</text>
+
+    <rect x="510" y="92" width="120" height="42" rx="6" fill="#ffffff" stroke="#9fc5bb"/>
+    <text x="570" y="111" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">SIGA-Saúde</text>
+    <text x="570" y="123" text-anchor="middle" font-size="7.6" fill="#526762">PHP 2012, sem API</text>
+
+    <rect x="510" y="158" width="120" height="42" rx="6" fill="#ffffff" stroke="#9fc5bb"/>
+    <text x="570" y="177" text-anchor="middle" font-size="9.8" font-weight="700" fill="#173f37">SMS / WhatsApp</text>
+    <text x="570" y="189" text-anchor="middle" font-size="7.6" fill="#526762">provedor externo</text>
+
+    <line x1="135" y1="54" x2="181" y2="58" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="135" y1="112" x2="181" y2="64" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="135" y1="170" x2="181" y2="70" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="300" y1="101" x2="316" y2="101" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="242" y1="118" x2="242" y2="122" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="377" y1="118" x2="377" y2="122" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="320" y1="140" x2="304" y2="140" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="435" y1="140" x2="506" y2="113" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="435" y1="179" x2="506" y2="179" class="arrow" marker-end="url(#arrow)"/>
+    <line x1="435" y1="58" x2="439" y2="58" class="arrow"/>
+    <line x1="435" y1="58" x2="506" y2="54" class="arrow" marker-end="url(#arrow)"/>
+
+    <text x="143" y="48" font-size="7.2" fill="#526762">agenda</text>
+    <text x="139" y="102" font-size="7.2" fill="#526762">atendimento assistido</text>
+    <text x="143" y="160" font-size="7.2" fill="#526762">painel</text>
+    <text x="447" y="49" font-size="7.2" fill="#526762">login</text>
+    <text x="447" y="102" font-size="7.2" fill="#526762">agenda e pacientes</text>
+    <text x="446" y="170" font-size="7.2" fill="#526762">lembrete</text>
+  </svg>
+
+  <p class="table-title"><strong>Tabela 6.</strong> ADR-001: decisão de arquitetura e condição de revisão.</p>
+  <table>
+    <thead><tr><th style="width:20%">Campo</th><th>Conteúdo</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Status e revisão</strong></td><td>Aceito. Revisão no fim do piloto (fevereiro de 2027) ou se o time passar de 12 pessoas, o pico passar de 8 mil sessões ou o banco ficar acima de 70% de CPU.</td></tr>
+      <tr><td><strong>Contexto</strong></td><td>Cinco pessoas, três meses até o piloto, legado PHP sem API, pico de 4 mil sessões e dados de saúde sob LGPD.</td></tr>
+      <tr><td><strong>Alternativas</strong></td><td>Microsserviços escalam e permitem deploy independente, mas exigem transações distribuídas e plantão que o time não tem. Low-code entrega tela rápido, mas integra mal com o SIGA e amarra a retenção. O monólito modular tem um deploy, uma transação ACID para a vaga e operação simples.</td></tr>
+      <tr><td><strong>Decisão</strong></td><td>Monólito modular com agenda, cadastro, notificações e integração; PostgreSQL; worker separado para mensagens; contêiner gerenciado; contratos testados no CI.</td></tr>
+      <tr><td><strong>Consequências</strong></td><td>Menos custo e uma transação para a vaga; a carga escala o app inteiro e o worker isola o SMS.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Padrões que resolvem as falhas do piloto</h3>
+  <p>A vaga não é decidida na tela. A transação executa <span class="mono">UPDATE slots SET status='reserved', version=version+1 WHERE id=:id AND status='available'</span>. Se nenhuma linha muda, a API responde 409. Um índice único parcial em <span class="mono">appointments(slot_id)</span> para status ativo e a Idempotency-Key impedem retry duplicado. Com 200 pedidos simultâneos, o teste produz uma confirmação e 199 respostas 409.</p>
+  <p>O envio não participa da transação. A confirmação grava a consulta e o evento na outbox. O worker chama o provedor com timeout de 2 s, três tentativas e circuit breaker que abre após 20 falhas em 30 s. Falhas vão para uma DLQ com alerta. A consulta segue confirmada, o comprovante fica no app e quem não tem celular entra na lista de ligações.</p>
+  <p>O Adapter do SIGA traduz as tabelas e o PHP de 2012 para as interfaces de agenda, cadastro e profissionais. Sem ele, o schema legado vazaria para as telas.</p>
+
+  <h2><span class="num">5</span>Organização ágil</h2>
+  <div class="two">
+    <div class="quote"><strong>Meta do produto.</strong> Até agosto de 2027, o Consulta Fácil é o canal principal nas 32 UBS, usado por pelo menos 50% dos pacientes, sem fila antes das 6h e com faltas abaixo de 12%.</div>
+    <div class="quote"><strong>Meta da Sprint 1.</strong> Em duas semanas, entregar em homologação o fluxo completo com dados mascarados, teste com cinco pessoas (duas com 60+) e nenhuma escrita no banco de produção.</div>
+  </div>
+
+  <p class="small"><strong>Papéis e ritmo.</strong> Com cinco pessoas, uma acumula PO, outra Scrum Master e três desenvolvedores. Refinamento às terças, planning e review de duas horas às quintas, daily de 15 min e retrospectiva no fim da sprint. O board registra história, critério, dono e evidência.</p>
+
+  <h3>Definição de Pronto</h3>
+  <div class="two">
+    <ul class="checklist">
+      <li>Critérios de aceitação demonstrados ao PO; nenhum Sev-1 ou Sev-2 aberto.</li>
+      <li>Revisão por par; CI verde com unitários, integração, contrato e E2E; SAST sem crítico.</li>
+      <li>Teclado, zoom 200%, contraste e axe sem crítico; teste com 60+ quando a interface mudar.</li>
+    </ul>
+    <ul class="checklist">
+      <li>Sem PII em logs; testes de autorização; minimização; aprovação do DPO para novo campo.</li>
+      <li>Logs, métricas e traces com ID de jornada; alerta para p95, erro, 409 e notificação.</li>
+      <li>Deploy em homologação; migração de ida e volta; feature flag, rollback e notas de release.</li>
+    </ul>
+  </div>
+
+  <h3>Hipótese do MVP nas três UBS</h3>
+  <p>Por seis semanas nas três UBS, 80% dos pacientes concluem o agendamento sem ajuda (70% entre 60+), metade usa o app ou site, não há dupla confirmação e as faltas caem de 18% para 12%.</p>
+  <p class="table-title"><strong>Tabela 7.</strong> Critérios, evidência e decisão do piloto.</p>
+  <table>
+    <thead><tr><th style="width:18%">Métrica</th><th style="width:19%">Critério</th><th style="width:35%">Evidência</th><th>Decisão se falhar</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Conclusão</strong></td><td>80% geral e 70% para 60+</td><td>Funil com ID de jornada e teste com cinco pessoas de 60+.</td><td>Corrigir usabilidade antes de expandir.</td></tr>
+      <tr><td><strong>Adoção</strong></td><td>50% dos agendamentos nas três UBS</td><td>Comparação com o SIGA e com uma UBS de controle.</td><td>Ajustar comunicação e atendimento assistido, sem expandir.</td></tr>
+      <tr><td><strong>Confiança</strong></td><td>Zero duplicata e zero incidente de LGPD</td><td>Reconciliação diária e registro de incidentes.</td><td>Qualquer duplicata ou incidente bloqueia a expansão.</td></tr>
+      <tr><td><strong>Impacto</strong></td><td>Faltas em 12% ou menos</td><td>No-show por UBS contra o período anterior e a UBS de controle.</td><td>Revisar lembretes e acesso; não expandir ainda.</td></tr>
+    </tbody>
+  </table>
+  <p class="small"><strong>Decisão ao fim da semana 6.</strong> Expandir para 10 UBS se os quatro critérios forem atendidos. Manter o piloto por quatro semanas e corrigir se falhar conclusão ou confiança. Ajustar comunicação se a adoção falhar sem perda de confiança.</p>
+
+  <h2><span class="num">6</span>Entrega, operação e recuperação</h2>
+  <p class="table-title"><strong>Tabela 8.</strong> Pipeline do commit à produção e as verificações que bloqueiam a promoção.</p>
+  <table>
+    <thead><tr><th style="width:16%">Etapa</th><th style="width:57%">Verificação</th><th>O que impede</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Commit e PR</strong></td><td>Branch protection, uma revisão, lint, varredura de segredo e testes unitários.</td><td>Push direto na main e correção noturna sem revisão.</td></tr>
+      <tr><td><strong>CI e artefato</strong></td><td>Build, integração com Postgres efêmero, contrato do SIGA, E2E de vaga e sem e-mail, axe, SAST, dependências, imagem imutável, SBOM e assinatura.</td><td>Regressão de agenda, de acessibilidade e versão diferente da testada.</td></tr>
+      <tr><td><strong>Homologação</strong></td><td>Migração de ida e volta em cópia mascarada, carga de 4 mil, restauração de backup e aprovação manual.</td><td>Migração destrutiva e falha de recuperação.</td></tr>
+      <tr><td><strong>Produção</strong></td><td>Canário de 5%, 25% e 100%, rollback automático, flag por UBS, janela das 6h às 9h bloqueada e agendamento sintético.</td><td>Explosão de erro e perda de agenda.</td></tr>
+    </tbody>
+  </table>
+  <p>A correção que apagou agendas não passaria por revisão obrigatória, migração ensaiada com backup restaurável e canário com rollback; o deploy às 23h ficaria fora da janela.</p>
+
+  <p class="table-title"><strong>Tabela 9.</strong> Duas métricas DORA e uma métrica de jornada do usuário.</p>
+  <table>
+    <thead><tr><th style="width:21%">Métrica</th><th style="width:35%">Definição</th><th style="width:15%">Meta</th><th>Por que</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Taxa de falha em mudanças</strong></td><td>Percentual de deploys que causam incidente ou rollback.</td><td>10% ou menos</td><td>Mede o risco de repetir a correção que quebrou a agenda.</td></tr>
+      <tr><td><strong>Tempo para restaurar</strong></td><td>Mediana entre o incidente Sev-1 ou Sev-2 e o serviço restaurado.</td><td>1 h ou menos</td><td>Mede a recuperação dos dados e da agenda.</td></tr>
+      <tr><td><strong>Agendamentos concluídos</strong></td><td>Iniciados que viram confirmados, por faixa de idade.</td><td>80% geral; 70% para 60+</td><td>Servidor saudável não prova que o paciente marcou.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="two">
+    <div class="box"><strong>RPO e RTO.</strong> RPO de 5 min; RTO de 1 h para a agenda e 4 h para lembretes. No pico, 5 min perdem cerca de 100 agendamentos, recuperáveis por comprovante e log. RPO de 24 h apagaria um dia; RTO de 1 h mantém consultas do mesmo dia. Backup diário, WAL contínuo, retenção de 35 dias, cópia imutável e ensaio trimestral de restauração.</div>
+    <div class="box"><strong>Liberação gradual das vagas.</strong> A flag <span class="mono">liberacao_vagas</span> começa com uma UBS e 10% das vagas às 7h, 40% às 7h05 e 100% às 7h10. O canário de código vai a 5%, 25% e 100%, com rollback se p95 passar de 2 s, erro de 1% ou 409 de 15%. O kill switch fecha a liberação e mantém o comprovante.</div>
+  </div>
+
+  <div class="box">
+    <p><strong>Post-mortem com dono e prazo.</strong> Ensaio de restauração em 30 dias, dono: infraestrutura; evidência: relatório com RPO e RTO medidos e link no runbook. Teste de carga de 4 mil usuários no CI antes do piloto, dono: dois desenvolvedores; job vermelho bloqueia o deploy.</p>
+  </div>
+</div>
+
+<!-- APÊNDICE A: PROTÓTIPO -->
+<section class="appendix">
+  <div class="report-head"><span><strong>Consulta Fácil</strong> | Apêndice A</span><span>Protótipo navegável</span></div>
+  <h2>Protótipo navegável</h2>
+  <div class="appendix-link"><strong>Link de acesso público</strong><a href="https://felipe0365.github.io/consulta-facil-a3/">https://felipe0365.github.io/consulta-facil-a3/</a></div>
+  <p>O protótipo cobre o fluxo principal do paciente: entrar, escolher UBS e especialidade, escolher horário, confirmar e receber o comprovante. Inclui a exceção da última vaga ocupada, com alternativas e fila de espera. Ele não representa o sistema completo; serve para testar as decisões de usabilidade e acessibilidade que o caso exige antes de investir em código.</p>
+  <p class="small"><strong>Como usar.</strong> Abra o link no celular ou no navegador, toque em “Preencher dados de demonstração” e siga o roteiro. Os controles A-, A+ e contraste ficam no topo. Para ver a exceção, escolha 14:20, a última vaga, e toque em Continuar.</p>
+
+  <div class="shots three">
+    <div class="shot">
+      <img src="../capturas/01-entrar.png" alt="Tela de entrada do Consulta Fácil com CPF e data de nascimento, sem campo de e-mail.">
+      <div class="cap"><b>1. Entrada sem e-mail.</b> CPF e data de nascimento bastam. A barra de acessibilidade fica visível desde o primeiro toque.</div>
+    </div>
+    <div class="shot">
+      <img src="../capturas/02-ubs.png" alt="Tela de escolha de UBS com bairro, distância e atendimento com agente.">
+      <div class="cap"><b>2. Escolha da UBS.</b> A pessoa vê bairro, distância e o caminho para o atendimento com agente de saúde.</div>
+    </div>
+    <div class="shot">
+      <img src="../capturas/03-horarios.png" alt="Tela de horários com a última vaga marcada e um horário ocupado desabilitado.">
+      <div class="cap"><b>3. Horários.</b> A última vaga aparece marcada. O horário já ocupado não pode ser selecionado.</div>
+    </div>
+  </div>
+
+  <div class="box" style="margin-top:3.5mm">
+    <p><strong>O que o protótipo testa.</strong> Se uma pessoa de 60+ e sem e-mail conclui o agendamento sem ajuda; se a etiqueta de última vaga reduz a surpresa quando o horário some; se a tela de exceção mantém a pessoa no fluxo; e se o comprovante continua disponível quando o lembrete falha.</p>
+  </div>
+</section>
+
+<section class="appendix">
+  <div class="report-head"><span><strong>Consulta Fácil</strong> | Apêndice A</span><span>Protótipo navegável</span></div>
+  <div class="shots two">
+    <div class="shot">
+      <img src="../capturas/04-vaga-ocupada.png" alt="Tela de exceção informando que a vaga acabou de ser ocupada, com horários alternativos e fila de espera.">
+      <div class="cap"><b>4. Vaga ocupada.</b> A pessoa vê o motivo, duas alternativas e a fila de espera. O cadastro e os dados permanecem salvos.</div>
+    </div>
+    <div class="shot">
+      <img src="../capturas/05-comprovante.png" alt="Tela de comprovante com protocolo, data, hora, UBS, profissional e aviso de que o lembrete é opcional.">
+      <div class="cap"><b>5. Comprovante.</b> Protocolo e dados ficam no aplicativo. O lembrete é opcional e não condiciona a consulta.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:4mm">Decisões do caso que aparecem no protótipo</h3>
+  <table class="decision-table">
+    <thead><tr><th style="width:31%">Decisão</th><th style="width:27%">Onde aparece</th><th>Por que foi tomada</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Cadastro sem e-mail</strong></td><td>Tela 1; RF-01</td><td>A idosa do piloto não tinha e-mail e não conseguia concluir o agendamento.</td></tr>
+      <tr><td><strong>Letras grandes, contraste e alvos de 44 px</strong></td><td>Barra superior; RA-01</td><td>Baixa visão e pouca familiaridade com celular. O ajuste não esconde informação.</td></tr>
+      <tr><td><strong>Atendimento com agente</strong></td><td>Tela 1 e escolha da UBS</td><td>Quem não tem celular ou prefere atendimento presencial continua incluído.</td></tr>
+      <tr><td><strong>Última vaga e resposta 409</strong></td><td>Telas 3 e 4; RF-02</td><td>O piloto confirmou duas pessoas na mesma vaga. A tela mostra a disputa sem prometer o que o banco não garante.</td></tr>
+      <tr><td><strong>Comprovante independente do SMS</strong></td><td>Tela 5; arquitetura de notificações</td><td>O provedor de SMS falhou e as retentativas derrubaram o servidor. A consulta não pode depender do lembrete.</td></tr>
+    </tbody>
+  </table>
+  <p class="footnote">O protótipo é um arquivo HTML com CSS e JavaScript, sem servidor e sem biblioteca externa. A fonte Atkinson Hyperlegible Next, criada pelo Braille Institute para leitores com baixa visão, fica na pasta do protótipo (licença SIL OFL). As capturas foram feitas em viewport de 430 x 932 px, com escala 2. O código e o roteiro de teste estão na pasta do projeto.</p>
+</section>
+
+<!-- APÊNDICE B: IA E REFERÊNCIAS -->
+<section class="appendix">
+  <div class="report-head"><span><strong>Consulta Fácil</strong> | Apêndice B</span><span>Uso de IA e referências</span></div>
+  <h2>Uso de inteligência artificial</h2>
+  <p>As ferramentas abaixo apoiaram a produção do trabalho. Nenhum dado real de paciente foi inserido. Nomes, CPF, telefone e protocolo usados no protótipo são fictícios.</p>
+  <table>
+    <thead><tr><th style="width:23%">Ferramenta</th><th style="width:45%">Para quê</th><th>O que o grupo revisou</th></tr></thead>
+    <tbody>
+      <tr><td><strong>OpenCode</strong><br><span class="tiny">agente de IA</span></td><td>Estruturar o relatório, gerar rascunhos, implementar o protótipo em HTML, CSS e JavaScript e montar o PDF.</td><td>Texto, números, decisões, links e capturas. A versão entregue é responsabilidade dos integrantes.</td></tr>
+      <tr><td><strong>Humanizer</strong><br><span class="tiny">blader/humanizer, MIT</span></td><td>Revisar o texto para retirar padrões de escrita de IA sem alterar os fatos, as decisões ou os números.</td><td>Frases, ritmo e cortes de repetição. Nenhum requisito ou número foi mudado na revisão.</td></tr>
+      <tr><td><strong>Claude Code</strong><br><span class="tiny">agente de IA</span></td><td>Revisar o protótipo, corrigir inconsistências de dados e redesenhar a interface (tipografia, componentes e estados).</td><td>Visual, textos das telas e capturas. Nenhuma decisão de engenharia foi alterada.</td></tr>
+      <tr><td><strong>Microsoft Edge headless</strong></td><td>Renderizar o HTML em PDF e capturar as telas do protótipo em viewport de 430 x 932 px.</td><td>Ferramenta de renderização; não gera conteúdo.</td></tr>
+    </tbody>
+  </table>
+  <div class="box">
+    <p><strong>Declaração.</strong> A IA foi usada como apoio de redação, prototipação e montagem. As decisões de engenharia, as premissas e a conferência dos números foram feitas pelo grupo. O uso está declarado conforme a seção 8 do enunciado.</p>
+  </div>
+  <p class="small">O diagrama de contexto é um SVG feito para este trabalho. As capturas são do protótipo local, sem banco de dados e sem integração real com o SIGA, o gov.br ou o provedor de mensagens.</p>
+
+  <h2 style="margin-top:5mm">Referências</h2>
+  <ol class="refs">
+    <li>BRASIL. <strong>Lei nº 13.709, de 14 de agosto de 2018</strong>. Dispõe sobre a proteção de dados pessoais e altera a Lei nº 12.965, de 23 de abril de 2014 (LGPD). Brasília, DF: Presidência da República, 2018.</li>
+    <li>W3C. <strong>Web Content Accessibility Guidelines (WCAG) 2.2</strong>. 2023. Disponível em: https://www.w3.org/TR/WCAG22/. Acesso em: 16 nov. 2026.</li>
+    <li>SCHWABER, K.; SUTHERLAND, J. <strong>The Scrum Guide</strong>. 2020. Disponível em: https://scrumguides.org/. Acesso em: 16 nov. 2026.</li>
+    <li>BASS, L.; CLEMENTS, P.; KAZMAN, R. <strong>Software Architecture in Practice</strong>. 4. ed. Boston: Addison-Wesley, 2021.</li>
+    <li>NYGARD, M. T. <strong>Release It! Design and Deploy Production-Ready Software</strong>. 2. ed. Raleigh: Pragmatic Bookshelf, 2018.</li>
+    <li>GOOGLE CLOUD. <strong>DORA: DevOps Research and Assessment</strong>. Accelerate State of DevOps Report 2024. Disponível em: https://dora.dev/. Acesso em: 16 nov. 2026.</li>
+    <li>FOWLER, M. <strong>Patterns of Enterprise Application Architecture</strong>. Boston: Addison-Wesley, 2002.</li>
+    <li>GAMMA, E.; HELM, R.; JOHNSON, R.; VLISSIDES, J. <strong>Design Patterns: Elements of Reusable Object-Oriented Software</strong>. Boston: Addison-Wesley, 1994.</li>
+    <li>BLADER. <strong>Humanizer</strong>: agent skill that removes signs of AI-generated writing. GitHub, 2026. Disponível em: https://github.com/blader/humanizer. Acesso em: 16 nov. 2026.</li>
+  </ol>
+  <p class="footnote">Referências no padrão ABNT NBR 6023, adaptadas para leitura em tela. A citação da LGPD aparece no item 1; a WCAG 2.2, no item 2; a DORA, no item 6.</p>
+</section>
+
+</body>
+</html>

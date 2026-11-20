@@ -1,0 +1,18 @@
+# Dependências e ambientes
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# Artefatos intermediários (o PDF final é relatorio/consulta-facil-a3.pdf)
+relatorio/draft.pdf
+relatorio/preview/
+test-login.png
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+.claude/settings.local.json
