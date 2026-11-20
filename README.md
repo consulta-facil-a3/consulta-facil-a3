@@ -2,7 +2,7 @@
 
 Estudo de caso da disciplina **Modelos, Métodos e Técnicas da Engenharia de Software**: plano de engenharia para o agendamento de consultas na rede pública do município fictício de Vale Verde.
 
-**Protótipo navegável:** https://felipe0365.github.io/consulta-facil-a3/
+**Protótipo navegável:** https://consulta-facil-a3.github.io/consulta-facil-a3/
 
 ## Conteúdo
 
