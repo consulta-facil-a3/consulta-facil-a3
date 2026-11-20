@@ -11,7 +11,6 @@ Estudo de caso da disciplina **Modelos, Métodos e Técnicas da Engenharia de So
 | `prototipo/` | Protótipo navegável em HTML, CSS e JavaScript puro (publicado no GitHub Pages) |
 | `relatorio/` | Relatório em HTML e o PDF final (`consulta-facil-a3.pdf`) |
 | `capturas/` | Capturas de tela do protótipo usadas no relatório |
-| `tools/` | Scripts para gerar as capturas e o PDF a partir do Microsoft Edge |
 
 ## Como usar o protótipo
 
@@ -27,16 +26,6 @@ Não há build nem dependências. Sirva a pasta `prototipo/` com qualquer servid
 npx serve prototipo
 # ou
 python -m http.server -d prototipo 8000
-```
-
-## Regenerar capturas e PDF
-
-Requer Node.js 18+ e Microsoft Edge (Windows); o carimbo de páginas usa Python com PyMuPDF.
-
-```bash
-node tools/capture.js      # gera capturas/*.png
-node tools/make-pdf.js     # gera relatorio/draft.pdf
-python tools/stamp.py      # gera relatorio/consulta-facil-a3.pdf
 ```
 
 ## Deploy
