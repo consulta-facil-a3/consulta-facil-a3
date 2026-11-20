@@ -28,7 +28,7 @@ for index in range(1, total):
 
 doc.set_metadata({
     "title": "Consulta Fácil | A3 Estudo de caso",
-    "author": "Grupo A3",
+    "author": "Grupo 5",
     "subject": "Plano de engenharia para o agendamento de consultas na rede pública",
     "keywords": "engenharia de software, A3, agendamento, SUS, protótipo",
     "creator": "Consulta Fácil",
